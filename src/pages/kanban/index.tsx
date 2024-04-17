@@ -1,3 +1,7 @@
+import { registerLicense } from '@syncfusion/ej2-base';
+
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cWWNCe0x3Qnxbf1x0ZFFMYl5bR3NPIiBoS35RckVnWHhfdnFVRmJYWEdw');
+
 import { KanbanComponent, ColumnsDirective, ColumnDirective, DialogFieldsModel, CardRenderedEventArgs } from "@syncfusion/ej2-react-kanban";
 import { extend, addClass } from '@syncfusion/ej2-base';
 import * as dataSource from './datasource.json';
@@ -5,14 +9,17 @@ import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 
 import { Button } from "@mui/material";
 import * as React from 'react';
+import { useState } from 'react';
 // import './App.css';
 const Overview = () => {
-    let data: Object[] = extend(
-        [],
-        (dataSource as { [key: string]: Object }).cardData,
-        null,
-        true
-    ) as Object[];
+    const [data, setData] = useState(extend([], (dataSource as { [key: string]: Object }).cardData, null, true) as Object[]);
+
+    // let data: Object[] = extend(
+    //     [],
+    //     (dataSource as { [key: string]: Object }).cardData,
+    //     null,
+    //     true
+    // ) as Object[];
     const fields: DialogFieldsModel[] = [
         { text: "ID", key: "Title", type: "TextBox" },
         { key: "Status", type: "DropDown" },
@@ -20,6 +27,12 @@ const Overview = () => {
         { key: "RankId", type: "TextBox" },
         { key: "Summary", type: "TextArea" },
     ];
+    const handleActionComplete = (args) => {
+        if (args.requestType === 'cardCreated' || args.requestType === 'cardEdited' || args.requestType === 'cardDeleted') {
+            // Update data with the latest changes
+            setData([...args.data]);
+        }
+    };
     const cardRendered = (args: CardRenderedEventArgs): void => {
         let val: string = (args.data as { [key: string]: Object })
             .Priority as string;
@@ -76,6 +89,7 @@ const Overview = () => {
                         }}
                         dialogSettings={{ fields: fields }}
                         cardRendered={cardRendered.bind(this)}
+                        actionComplete={handleActionComplete}
                     >
                         <ColumnsDirective>
                             <ColumnDirective
