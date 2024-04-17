@@ -28,6 +28,7 @@
 		"@mui/x-date-pickers": "^5.0.20",
 		"@mui/x-tree-view": "^6.17.0",
 		"@react-spring/web": "^9.7.3",
+		"@syncfusion/ej2-react-kanban": "^25.1.35",
 		"apexcharts": "3.37.0",
 		"axios": "^1.6.7",
 		"axios-cookiejar-support": "^5.0.0",

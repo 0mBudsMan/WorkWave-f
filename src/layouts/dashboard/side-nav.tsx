@@ -57,6 +57,11 @@ const inforouting=[
 		class: "ScopeManagement",
 		subClass: "GanttChart"
 	},
+	{
+		path: "kanban",
+		class: "ScopeManagement",
+		subClass: "Kanban"
+	}
 	
 	//rest of the routes will be added once those pages are made
 ]
@@ -313,6 +318,21 @@ export const SideNav = (props) => {
 									className="GanttChart"
 								>
 									<ListItemText className="GanttChart" primary="Gantt Chart" />
+								</ListItemButton>
+							
+							</List>
+						</Collapse>
+
+						<Collapse in={openScope} timeout="auto" unmountOnExit>
+							<List component="div" disablePadding>
+								
+								<ListItemButton
+									component={NextLink}
+									href="/kanban"
+									sx={{ pl: 4 }}
+									className="Kanban"
+								>
+									<ListItemText className="Kanban" primary="Kanban Board" />
 								</ListItemButton>
 							
 							</List>
