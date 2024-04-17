@@ -22,9 +22,9 @@ const Page = () => {
 	const auth = useAuth();
 	const formik = useFormik({
 		initialValues: {
-			company_id: "",
+			First_Name: "",
+			Last_Name: "",
 			email: "",
-			name: "",
 			password: "",
 			submit: null,
 		},
@@ -33,16 +33,16 @@ const Page = () => {
 				.email("Must be a valid email")
 				.max(255)
 				.required("Email is required"),
-			company_id: Yup.string().max(10).required("Company ID is required"),
-			name: Yup.string().max(255).required("Name is required"),
+			First_Name: Yup.string().max(15).required("First Name is required"),
+			Last_Name: Yup.string().max(15).required("Last Name is required"),
 			password: Yup.string().max(255).required("Password is required"),
 		}),
 		onSubmit: async (values, helpers) => {
 			try {
 				await auth.signUp(
-					values.company_id,
+					values.First_Name,
+					values.Last_Name,
 					values.email,
-					values.name,
 					values.password
 				);
 				router.push("/");
@@ -78,7 +78,7 @@ const Page = () => {
 					</Typography>
 					<form noValidate onSubmit={formik.handleSubmit} style={{ paddingTop: "25px" }}>
 						<Stack spacing={3}>
-							<Typography fontFamily={'Poppins, sans-serif'} fontWeight={400} fontSize={14} paddingBottom={0.25} color={"#868683"}>Company ID</Typography>
+							<Typography fontFamily={'Poppins, sans-serif'} fontWeight={400} fontSize={14} paddingBottom={0.25} color={"#868683"}>First Name</Typography>
 							<OutlinedInput
 								sx={{
 									'&[class*="MuiOutlinedInput-root"]': {
@@ -95,23 +95,23 @@ const Page = () => {
 
 								error={
 									!!(
-										formik.touched.name &&
-										formik.errors.name
+										formik.touched.First_Name &&
+										formik.errors.First_Name
 									)
 								}
 
 								helperText={
-									formik.touched.name &&
-									formik.errors.name
+									formik.touched.First_Name &&
+									formik.errors.First_Name
 								}
-								/*label="Company ID"*/
-								name="company_id"
+								/*label="First Name"*/
+								name="First_Name"
 								onBlur={formik.handleBlur}
 								onChange={formik.handleChange}
-								value={formik.values.company_id}
+								value={formik.values.First_Name}
 							/>
 
-							<Typography fontFamily={'Poppins, sans-serif'} fontWeight={400} fontSize={14} paddingBottom={0.25} color={"#868683"}>Your Full Name</Typography>
+							<Typography fontFamily={'Poppins, sans-serif'} fontWeight={400} fontSize={14} paddingBottom={0.25} color={"#868683"}>Last Name</Typography>
 							<OutlinedInput
 								sx={{
 									'&[class*="MuiOutlinedInput-root"]': {
@@ -128,20 +128,20 @@ const Page = () => {
 
 								error={
 									!!(
-										formik.touched.name &&
-										formik.errors.name
+										formik.touched.Last_Name &&
+										formik.errors.Last_Name
 									)
 								}
 								fullWidth
 								helperText={
-									formik.touched.name &&
-									formik.errors.name
+									formik.touched.Last_Name &&
+									formik.errors.Last_Name
 								}
-								label="Name"
-								name="name"
+								label="Last_Name"
+								name="Last_Name"
 								onBlur={formik.handleBlur}
 								onChange={formik.handleChange}
-								value={formik.values.name}
+								value={formik.values.Last_Name}
 							/>
 
 							<Typography fontFamily={'Poppins, sans-serif'} fontWeight={400} fontSize={14} paddingBottom={0.25}color={"#868683"}>Your Email Address</Typography>
