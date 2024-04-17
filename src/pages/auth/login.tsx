@@ -26,11 +26,12 @@ import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import Image from "next/image";
+import axios from "axios";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const Page = () => {
 	const router = useRouter();
-	const auth = useAuth();
+	
 	const formik = useFormik({
 		initialValues: {
 			email: "buddhadevom@gmail.com",
@@ -45,25 +46,26 @@ const Page = () => {
 			password: Yup.string().max(255).required("Password is required"),
 		}),
 		onSubmit: async (values, helpers) => {
-			try {
-				await auth.signIn(values.email, values.password);
-				router.push("/");
-			} catch (err) {
-				helpers.setStatus({ success: false });
-				helpers.setErrors({ submit: err.message });
-				helpers.setSubmitting(false);
+			const data = {
+				email: values.email,
+				password: values.password
 			}
+			await axios.post("http://localhost:8000/api/v1/auth/login",data)
+			.then((res)=>{
+				alert("Logged in")
+				// localStorage.setItem("token", res.data.data.token)
+				router.push("/")
+			})
+			.catch((err)=>{
+				alert("ERR");
+				console.log(err)
+			})
 		},
 	});
 
-	const handleMethodChange = useCallback((event, value) => {
-		setMethod(value);
-	}, []);
+	
 
-	const handleSkip = useCallback(() => {
-		auth.skip();
-		router.push("/");
-	}, [auth, router]);
+	
 
 	const [showPassword, setShowPassword] = useState(false);
 
