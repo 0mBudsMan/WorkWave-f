@@ -15,6 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Image from 'next/image';
+import axios from "axios";
 
 const Page = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -38,19 +39,24 @@ const Page = () => {
 			password: Yup.string().max(255).required("Password is required"),
 		}),
 		onSubmit: async (values, helpers) => {
-			try {
-				await auth.signUp(
-					values.First_Name,
-					values.Last_Name,
-					values.email,
-					values.password
-				);
-				router.push("/");
-			} catch (err) {
-				helpers.setStatus({ success: false });
-				helpers.setErrors({ submit: err.message });
-				helpers.setSubmitting(false);
+			const data = {
+				FirstName: values.First_Name,
+				LastName: values.Last_Name,
+				email: values.email,
+				password: values.password
 			}
+			console.log(data)
+			await axios.post('http://localhost:8000/api/v1/auth/register',data )
+			.then((res)=>{
+				alert(res.data.message);
+				localStorage.setItem("token", res.data.data.token)
+				router.push("/")
+
+			})
+			.catch((err)=>{
+				alert("Error occured: "+ err.response.data.error);
+				// console.log(err);
+			})
 		},
 	});
 

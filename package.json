@@ -30,7 +30,7 @@
 		"@react-spring/web": "^9.7.3",
 		"@syncfusion/ej2-react-kanban": "^25.1.35",
 		"apexcharts": "3.37.0",
-		"axios": "^1.6.7",
+		"axios": "^1.6.8",
 		"axios-cookiejar-support": "^5.0.0",
 		"cors-anywhere": "^0.4.4",
 		"date-fns": "^2.29.3",

@@ -221,7 +221,7 @@ export const SideNav = (props) => {
 					textAlign: "left",
 					paddingLeft: "12px",
 				}} >
-					<Typography fontFamily="Poppins, sans-serif" fontSize={16} fontWeight={700} pb={1.5}>Hi John!</Typography>
+					<Typography fontFamily="Poppins, sans-serif" fontSize={16} fontWeight={700} pb={1.5}>Hi Om!</Typography>
 					<Typography fontFamily="Poppins, sans-serif" fontSize={12} fontWeight={400}>Ready to tackle another day on a project?</Typography>
 
 
@@ -444,7 +444,7 @@ export const SideNav = (props) => {
 				  }}
 				>
 				  <Typography fontFamily="Poppins, sans-serif" textAlign={"center"} fontSize={16} fontWeight={700} pb={1.5}>
-					Hi John!
+					Hi OM!
 				  </Typography>
 				</Box>
 				<Box
@@ -476,29 +476,7 @@ export const SideNav = (props) => {
 					  <img width={20} src="/onSelection/ScopeManagement.svg" alt="layers-icon" />
 					</Button>
 		  
-					<Button sx={{paddingY: "25px"}}  onClick={() => setOpenCostEstimate(!openCostEstimate)}>
-					  <img width={20} src="/CostManagement.svg" alt="cost-icon" />
-					</Button>
-		  
-					<Button sx={{paddingY: "25px"}} onClick={() => setOpenResourceManagement(!openResourceManagement)}>
-					  <img width={20} src="/ResourceMangementMain.svg" alt="group-icon" />
-					</Button>
-		  
-					<Button sx={{paddingY: "25px"}} onClick={() => setOpenReports(!openReports)}>
-					  <img width={20} src="/Reports.svg" alt="reports-icon" />
-					</Button>
-		  
-					<Button sx={{paddingY: "25px"}} onClick={() => setOpenDocumentManagement(!openDocumentManagement)}>
-					  <img width={20} src="/DocumentManagement.svg" alt="document-icon" />
-					</Button>
-		  
-					<Button sx={{paddingY: "25px"}} component={NextLink} href="/integration">
-					  <img width={20} src="/Vector (3).svg" alt="integration-icon" />
-					</Button>
-		  
-					<Button sx={{paddingY: "25px"}} onClick={() => setOpenSettings(!openSettings)}>
-					  <img width={20} src="/Vector (4).svg" alt="settings-icon" />
-					</Button>
+					
 				  </Stack>
 				</Box>
 			  </Box>
