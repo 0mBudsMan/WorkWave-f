@@ -9,11 +9,30 @@ import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 
 import { Button } from "@mui/material";
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { kanbanInit } from '@/utils/helper';
 // import './App.css';
 const Overview = () => {
-    const [data, setData] = useState(extend([], (dataSource as { [key: string]: Object }).cardData, null, true) as Object[]);
+    const [data, setData] = useState([]);
+    const [pageLoaded, setPageLoaded] = useState(false)
+    const tempID = "6624056d3d435961dc7f6615";
+    async function getTasks() {
+        await axios.get("http://localhost:8000/api/v1/member/getmember/"+tempID)
+        .then((res)=>{
+            console.log(kanbanInit(res.data.data.TodoTasks, "OM"))
+            setData(kanbanInit(res.data.data.TodoTasks, "OM"));
+            setPageLoaded(true);
+        })
+        .catch((err)=>{
+            console.log(err)
+            alert(err?.response?.data?.message?err.response.data.message:"Error")
+          })
+    }
 
+    useEffect(()=>{
+        if(pageLoaded===false) getTasks();
+      }, [pageLoaded])
     // let data: Object[] = extend(
     //     [],
     //     (dataSource as { [key: string]: Object }).cardData,
@@ -71,6 +90,10 @@ const Overview = () => {
     const getString = (assignee: string): string => {
         return (assignee.match(/\b(\w)/g) as string[]).join("").toUpperCase();
     };
+    if(!pageLoaded){
+        return <h1>Idhar loader lagao koi</h1>
+    }
+    else{
     return (
         <div className="schedule-control-section">
             <div className="col-lg-12 control-section">
@@ -124,7 +147,7 @@ const Overview = () => {
                 console.log(data)
             }}>hey</Button>
         </div>
-    );
+    );}
 }
 Overview.getLayout = (page) => <DashboardLayout isMinimised={true}>{page}</DashboardLayout>;
 export default Overview;

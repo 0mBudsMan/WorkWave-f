@@ -334,7 +334,7 @@ const Page = () => {
     setPageLoaded(true);
   })
   .catch((err)=>{
-    alert(err.response.data.message)
+    alert(err?.response?.data?.message?err.response.data.message:"Error")
   })
 }
 
@@ -467,7 +467,7 @@ const buttonToggle2 = () => {
   const [hidden, setHidden]=useState(true)
 
   if(!pageLoaded){
-    return <h1>idhar loaded daal do koi</h1>
+    return <h1>idhar loader daal do koi</h1>
   }
   else{
   return (
