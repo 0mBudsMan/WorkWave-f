@@ -12,6 +12,7 @@ import '@fontsource/poppins/700.css';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {ButtonGroup} from "@mui/material";
+import  CircularLoader  from '@/components/CircularLoader';
 import axios from "axios";
 const currentDate = new Date();
 const tasks: Task[] = [
@@ -467,7 +468,7 @@ const buttonToggle2 = () => {
   const [hidden, setHidden]=useState(true)
 
   if(!pageLoaded){
-    return <h1>idhar loader daal do koi</h1>
+    return <CircularLoader />;
   }
   else{
   return (
