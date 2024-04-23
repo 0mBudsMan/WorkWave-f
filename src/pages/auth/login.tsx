@@ -26,7 +26,6 @@ import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
 import InputAdornment from '@mui/material/InputAdornment';
 import Image from "next/image";
-import axios from "axios";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const Page = () => {
