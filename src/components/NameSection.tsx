@@ -11,7 +11,8 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 
-const NameSection = () => {
+const NameSection = ({ user }) => {
+  const [FirstName, LastName, Email,Bio, City, State] = [user.FirstName, user.LastName, user.Email, user.Bio, user.City, user.State];
   return (
     <>
     <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%"}}>
@@ -39,20 +40,20 @@ const NameSection = () => {
         <Image src="/ash.jpeg" width="200" height="200" alt="ash" style={{borderRadius: "50%"}}></Image>
         <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", marginLeft: "50px"}}>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-          <Typography mr={2} fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={600} fontSize={30}>Aayush Prajapati</Typography>
+          <Typography mr={2} fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={600} fontSize={30}>{FirstName} {LastName}</Typography>
           <Typography fontFamily={'Poppins, sans-serif'} color={"#31363F"} fontWeight={400} fontSize={15}>They/Them</Typography>
           </div>
           <div>
-            <Typography fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={400} fontSize={20}>Cyber Secuity Expert at GeekHaven</Typography>
+            <Typography fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={400} fontSize={20}>{ Bio }</Typography>
           </div>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: "20px"}}>
             <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
               <HouseIcon sx={{color: 'rgba(102, 112, 133, 1)'}}></HouseIcon>
-              <Typography fontFamily={'Poppins, sans-serif'} color={"rgba(102, 112, 133, 1)"} fontWeight={500} fontSize={15}>Faridabad, Haryana</Typography>
+              <Typography fontFamily={'Poppins, sans-serif'} color={"rgba(102, 112, 133, 1)"} fontWeight={500} fontSize={15}>{City}, {State}</Typography>
             </div>
             <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginLeft: "20px"}}>
               <AlternateEmailIcon sx={{color: 'rgba(102, 112, 133, 1)'}}></AlternateEmailIcon>
-              <Typography fontFamily={'Poppins, sans-serif'} color={"rgba(102, 112, 133, 1)"} fontWeight={500} fontSize={15}>ifi2022016@iiita.ac.in</Typography>
+              <Typography fontFamily={'Poppins, sans-serif'} color={"rgba(102, 112, 133, 1)"} fontWeight={500} fontSize={15}>{Email}</Typography>
             </div>
           </div>
         </div>

@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react';
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { userGetter } from "@/utils/idgetter";
 import NameSection from "@/components/NameSection";
+import { gridColumnGroupsLookupSelector } from "@mui/x-data-grid";
 
 const Dashboard = () => {
   function createData(
@@ -31,12 +32,8 @@ const Dashboard = () => {
     return { name, status, id };
   }
 
-  const rows = [
-    createData('Create CICADA 3301', "active", "16"),
-    createData("Stop being a simp", "inactive", "13"),
-
-  ];
-
+  const rows = [];
+  
   function createOrg(
     name: string,
     role: string,
@@ -49,67 +46,61 @@ const Dashboard = () => {
     createOrg('Saaf Suthre Log', 'Leader', '69'),
     createOrg('Genetix', 'Ex-Member', '71'),
     createOrg('GeekHaven', 'CEO', '69'),
-
+    
   ]
-
+  
   const [tasks, setTasks] = useState([]);
-  const [organizations, setOrganizations] = useState([]);
+  const [membership, setMembership] = useState([]);
   const [user, setUser] = useState([]);
-  const userId = userGetter();
 
-  // function for 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // This will log the updated membership state whenever it changes
+    console.log("membership is here", membership);
+    if (membership && membership.length > 0) {
+      membership.forEach(m => {
+        console.log("making task :", m.TodoTasks);
+        if (m.TodoTasks && m.TodoTasks.length > 0) {
+          m.TodoTasks.forEach(task => {
+            appendTask(task);
+          });
+        }
+      });
+    }
+    console.log("tasks is here", rows);
+    setTasks(rows);
+  }, [membership]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    console.log("token is here", token);
     if(token){
       // fetch user info
-      axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/getuser`, {
+      axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/getuser`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })  .then(response => {
         console.log("User successfully fetched");
-        console.log(response.data);
+        console.log(response.data.data);
+        setUser(response.data.data);
+        console.log(response.data.data.Memberships);
+        setMembership(response.data.data.Memberships);                  
       })  .catch(error => { 
         console.error('Error fetching user:', error);
       }); 
     }
-    // Fetch tasks from backend
-    // axios.get('/api/v1/tasks')
-    //   .then(response => {
-    //     setTasks(response.data.tasks);
-    //     console.log(response.data.tasks);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching tasks:', error);
-    //   });
-
-    // Fetch organizations from backend
-    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getOrganisations`)
-      .then(response => {
-        console.log(userId.id);
-        console.log("Organizations successfully fetched");
-        console.log(response.data);
-        setOrganizations(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error fetching organizations:', error);
-      });
-
-  // fetch user info
-  // axios.get('/api/v1/user')
-  //     .then(response => {
-  //       setOrganizations(response.data.organizations);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching organizations:', error);
-  //     });
+  
    }, []); 
 
-
+  // function for appending all the task in row array using map and createData function
+  function appendTask(task){
+    console.log("appending task", task.Title, task.Status, task.id);
+    rows.push(createData(task.Title, task.Status, task.id));
+  }
   return (
     <div style={{ display: "flex", flexDirection: "column", padding: "85px" }}>
 
-      <NameSection />
+      <NameSection user={user}/>
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Box sx={{ width: "60%" }}flexBasis={1}>
           <Box mt={8} >
@@ -126,9 +117,9 @@ const Dashboard = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {tasks.map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
@@ -137,12 +128,12 @@ const Dashboard = () => {
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      {row.status == "active" &&
+                      {row.status == 'COMPLETED' &&
                         <TableCell align="right" component="th" scope="row">
                           <Image src="/active.svg" width={70} height={70} alt="active"></Image>
                         </TableCell>
                       }
-                      {row.status == "inactive" &&
+                      {row.status == 'PENDING' &&
                         <TableCell align="right" component="th" scope="row">
                           <Image src="/inactive.svg" width={70} height={70} alt="active"></Image>
                         </TableCell>
@@ -168,18 +159,18 @@ const Dashboard = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {organizations.map((org) => (
+                  {membership.map((mem) => (
                     <TableRow
-                      key={org.id}
+                      key={mem.OrganizationId}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       
                       <TableCell component="th" scope="row">
-                        {org.Name}
+                        {mem.Organization.Name}
                       </TableCell>
 
                         <TableCell align="right" component="th" scope="row">
-                          Role
+                          {mem.UserRole}
                         </TableCell>
                       
 
@@ -194,7 +185,7 @@ const Dashboard = () => {
 			scrollbarColor: "#FFE299 #FCF8F0 ", width: "90%" }}>
           <Typography mb={5} fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={600} fontSize={20}>About Me</Typography>
           <Typography>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam possimus totam consequatur aut hic quae laboriosam impedit cum, eius tempora veniam tempore tenetur, aperiam sequi enim porro mollitia repellat fugit unde voluptatem nulla nemo. Eos perferendis at labore fuga voluptates quos eius maxime dicta ex beatae explicabo molestias id sed, recusandae eaque provident. Sunt, qui commodi ipsum accusamus dolores provident asperiores eius illo? Harum nemo tenetur dolores aliquid incidunt!
+            { user.About }
           </Typography>
         </Box>
 
