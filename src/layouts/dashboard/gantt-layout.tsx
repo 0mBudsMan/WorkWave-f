@@ -15,108 +15,8 @@ import CircularProgress, {
 
 
 export const Layout = (props) => {
-  const tasks = [
-    {
-        name: "Backend Improvements",
-        progress: 25,
-        duration: "15 days"
-    },
-    {
-        name: "Desktop Development",
-        progress: 60,
-        duration: "5 days"
-    },
-    {
-        name: "Frontend Updates",
-        progress: 40,
-        duration: "5 days"
-    },
-    {
-        name: "Security Enhancements",
-        progress: 50,
-        duration: "5 days"
-    },
-    {
-        name: "Mobile App Development",
-        progress: 30,
-        duration: "10 days"
-    },
-    {
-        name: "Database Optimization",
-        progress: 70,
-        duration: "10 days"
-    },
-    {
-        name: "UI/UX Redesign",
-        progress: 20,
-        duration: "5 days"
-    },
-    {
-        name: "Documentation Update",
-        progress: 10,
-        duration: "3 days"
-    },
-    {
-        name: "Testing Phase",
-        progress: 15,
-        duration: "5 days"
-    },
-    {
-        name: "Infrastructure Setup",
-        progress: 20,
-        duration: "5 days"
-    },
-    {
-        name: "User Interface Refinement",
-        progress: 25,
-        duration: "5 days"
-    },
-    {
-        name: "Backend API Development",
-        progress: 30,
-        duration: "5 days"
-    },
-    {
-        name: "Bug Fixes",
-        progress: 35,
-        duration: "5 days"
-    },
-    {
-        name: "Performance Optimization",
-        progress: 40,
-        duration: "3 days"
-    },
-    {
-        name: "Deployment Planning",
-        progress: 45,
-        duration: "5 days"
-    },
-    {
-        name: "Content Creation",
-        progress: 50,
-        duration: "5 days"
-    },
-    {
-        name: "Server Configuration",
-        progress: 55,
-        duration: "5 days"
-    },
-    {
-        name: "Data Analysis",
-        progress: 60,
-        duration: "5 days"
-    },
-    {
-        name: "Integration Testing",
-        progress: 65,
-        duration: "5 days"
-    },
-    {
-        name: "User Acceptance Testing",
-        progress: 70,
-        duration: "3 days"
-    }
-];
+
+  const tasks=props.tasks
 
       
       
@@ -152,7 +52,7 @@ export const Layout = (props) => {
         );
       }
     
-    const renderedItems = tasks.map((item, index) => (
+    const renderedItems = tasks?.map((item, index) => (
        <Grid container spacing={0.25} mb={2}>
           <Grid item xs={6} display={"flex"} alignItems={"center"} justifyContent={"flex-start "} >
             <Typography  fontFamily={'Poppins,sans-serif'}  fontWeight={400} fontSize={14}>
@@ -194,7 +94,7 @@ export const Layout = (props) => {
         id="free-solo-2-demo"
         disableClearable
         sx={{width: "180px", margin: "6px"}}
-        options={tasks.map((option) => option.name)}
+        options={tasks?.map((option) => option.name)}
         //onChange={filteringFunction}
         renderInput={(params) => (
           <TextField
