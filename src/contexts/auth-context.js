@@ -6,6 +6,7 @@ import {
 	useRef,
 } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 const HANDLERS = {
 	INITIALIZE: "INITIALIZE",
@@ -160,50 +161,87 @@ export const AuthProvider = (props) => {
 	};
 
 	const signIn = async (email, password) => {
-		if (email !== "buddhadevom@gmail.com" || password !== "Password321") {
-			throw new Error("Please check your email and password");
+		const data = {
+			email: email,
+			password: password
 		}
-
-		// axios
-		// 	.post("/api/token/")
-		// 	.then(function (response) {
-		// 		// handle success
-		// 		console.log(response);
-		// 	})
-		// 	.catch(function (error) {
-		// 		// handle error
-		// 		console.log(error);
-		// 	})
-		// 	.finally(function () {
-		// 		// always executed
-		// 	});
-
-		try {
-			window.sessionStorage.setItem("authenticated", "true");
-		} catch (err) {
-			console.error(err);
-		}
-
-		const user = {
-			id: "5e86809283e28b96d2d38537",
+		let user = {
 			avatar: "/assets/avatars/avatar-anika-visser.png",
-			name: "Om",
-			email: "buddhadevom@gmail.com",
+			name: "",
+			email: "",
+			token: ""
 		};
+		await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/login`,data)
+		.then((res)=>{
+			// alert(res.data.data.message)
+			console.log(res)
+			
+			alert(res.data.message);
+			try {
+				window.sessionStorage.setItem("authenticated", "true");
+				window.sessionStorage.setItem("user", JSON.stringify(res.data.data.user))
+				window.sessionStorage.setItem("token", (res.data.data.token))
+				// alert(user.email)
+			} catch (err) {
+				console.error(err);
+			}
+			dispatch({
+				type: HANDLERS.SIGN_IN,
+				payload: res.data.data.user,
+			});
+		})
+		.catch((err)=>{
+			console.log(err)
+			alert(err.response.data.error)
+		})
 
-		dispatch({
-			type: HANDLERS.SIGN_IN,
-			payload: user,
-		});
+		
 	};
 
-	const signUp = async (company_id, email, name, password) => {
-		throw new Error("Sign up is not implemented");
+	const signUp = async (firstName, email, lastName, password) => {
+		const data = {
+			email: email,
+			password: password,
+			FirstName: firstName,
+			LastName: lastName
+		}
+		console.log(data)
+		let user = {
+			avatar: "/assets/avatars/avatar-anika-visser.png",
+			name: "",
+			email: "",
+			token: ""
+		};
+		await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/register`,data)
+		.then((res)=>{
+			// alert(res.data.data.message)
+			console.log(res)
+			
+			alert(res.data.message);
+			try {
+				window.sessionStorage.setItem("authenticated", "true");
+				window.sessionStorage.setItem("user", JSON.stringify(res.data.data.user))
+				window.sessionStorage.setItem("token", res.data.data.token)
+				// alert(user.email)
+			} catch (err) {
+				console.error(err);
+			}
+			dispatch({
+				type: HANDLERS.SIGN_UP,
+				payload: res.data.data.user,
+			});
+		})
+		.catch((err)=>{
+			console.log(err)
+			alert(err.response.data.error)
+		})
+
 	};
 
 	const fetchProjects = async () => {};
 
 	const signOut = () => {
+		window.sessionStorage.clear()
 		dispatch({
 			type: HANDLERS.SIGN_OUT,
 		});

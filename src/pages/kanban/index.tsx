@@ -5,13 +5,14 @@ registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cWWNCe0x3Qnxbf1x0ZFFMYl5bR3NPIiBoS35
 import { KanbanComponent, ColumnsDirective, ColumnDirective, DialogFieldsModel, CardRenderedEventArgs } from "@syncfusion/ej2-react-kanban";
 import { extend, addClass } from '@syncfusion/ej2-base';
 import * as dataSource from './datasource.json';
-import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
+import { Layout as DashboardLayout } from "/src/layouts/dashboard/layout";
 
 import { Button } from "@mui/material";
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { kanbanInit } from '@/utils/helper';
+import  CircularLoader  from '@/components/CircularLoader';
 // import './App.css';
 const Overview = () => {
     const [data, setData] = useState([]);
@@ -91,7 +92,7 @@ const Overview = () => {
         return (assignee.match(/\b(\w)/g) as string[]).join("").toUpperCase();
     };
     if(!pageLoaded){
-        return <h1>Idhar loader lagao koi</h1>
+    return <CircularLoader />;
     }
     else{
     return (

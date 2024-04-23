@@ -39,24 +39,19 @@ const Page = () => {
 			password: Yup.string().max(255).required("Password is required"),
 		}),
 		onSubmit: async (values, helpers) => {
-			const data = {
-				FirstName: values.First_Name,
-				LastName: values.Last_Name,
-				email: values.email,
-				password: values.password
+			try {
+				await auth.signUp(
+					values.First_Name,
+					values.email,
+					values.Last_Name,
+					values.password
+				);
+				router.push("/");
+			} catch (err) {
+				helpers.setStatus({ success: false });
+				helpers.setErrors({ submit: err.message });
+				helpers.setSubmitting(false);
 			}
-			console.log(data)
-			await axios.post('http://localhost:8000/api/v1/auth/register',data )
-			.then((res)=>{
-				alert(res.data.message);
-				localStorage.setItem("token", res.data.data.token)
-				router.push("/")
-
-			})
-			.catch((err)=>{
-				alert("Error occured: "+ err.response.data.error);
-				// console.log(err);
-			})
 		},
 	});
 

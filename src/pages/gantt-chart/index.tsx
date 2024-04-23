@@ -12,7 +12,9 @@ import '@fontsource/poppins/700.css';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {ButtonGroup} from "@mui/material";
+import  CircularLoader  from '@/components/CircularLoader';
 import axios from "axios";
+import {userGetter, tokenGetter} from "../../utils/idgetter"
 const currentDate = new Date();
 const tasks: Task[] = [
   {
@@ -320,12 +322,14 @@ const tasks: Task[] = [
 
 // Init
 const Page = () => {
-  const tempID = "6624056d3d435961dc7f6615";
+  let tempID = userGetter();
+  tempID = tempID.id
+  console.log(tempID)
   const [pageLoaded, setPageLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [taskks, setTaskks] = useState(tasks);
   async function fetchTasks() {
-  await axios.get("http://localhost:8000/api/v1/member/getmember/"+tempID)
+  await axios.get("http://localhost:8000/api/v1/member/getmember/"+"66204399857b4a2ecf7f0491")
   .then((res)=>{
     
     // setTaskks(res.data.data.TodoTasks)
@@ -334,6 +338,7 @@ const Page = () => {
     setPageLoaded(true);
   })
   .catch((err)=>{
+    console.log(err)
     alert(err?.response?.data?.message?err.response.data.message:"Error")
   })
 }
@@ -467,7 +472,7 @@ const buttonToggle2 = () => {
   const [hidden, setHidden]=useState(true)
 
   if(!pageLoaded){
-    return <h1>idhar loader daal do koi</h1>
+    return <CircularLoader />;
   }
   else{
   return (
