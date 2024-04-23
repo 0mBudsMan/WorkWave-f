@@ -15,6 +15,10 @@ import {ButtonGroup} from "@mui/material";
 import  CircularLoader  from '@/components/CircularLoader';
 import axios from "axios";
 import {userGetter, tokenGetter} from "../../utils/idgetter"
+import { useRouter } from "next/router";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 const currentDate = new Date();
 const tasks: Task[] = [
   {
@@ -328,25 +332,47 @@ const Page = () => {
   const [pageLoaded, setPageLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [taskks, setTaskks] = useState(tasks);
-  async function fetchTasks() {
-  await axios.get("http://localhost:8000/api/v1/member/getmember/"+"66204399857b4a2ecf7f0491")
-  .then((res)=>{
+  const [organisations, setOrganisations] = useState([]);
+  const [organisation, setOrganisation] = useState("");
+  const [organisationID, setOrganisationID] = useState();
+  const [pageLoadedO, setPageLoadedO] = useState(false);
+  const [assigner, setAssigner] = useState("");
+  const [assignee, setAssignee] = useState("");
+  // const [tasks, setTasks] = useState([]);
+
+  const router = useRouter();
+  const currentUrl = router.asPath;
+  const urlAfterGanttChart = currentUrl.split('/gantt-chart?')[1];
+
+  async function organisationsGetter() {
+    const token = tokenGetter();
+    await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/getOrganisations`, {
+      headers:{
+        'Authorization': 'Bearer '+token
+      }
+    })
+    .then((res)=>{
+      console.log(res);
+      setOrganisations(res.data.data);
+      setPageLoadedO(true)
+    })
+    .catch((err)=>{console.log(err)})
+  }
+  async function tasksGetter(id){
+    const token = tokenGetter();
     
-    // setTaskks(res.data.data.TodoTasks)
-    // console.log(res.data.data.TodoTasks)
-    setTaskks(initTasks(res.data.data.TodoTasks))
-    setPageLoaded(true);
-  })
-  .catch((err)=>{
-    console.log(err)
-    alert(err?.response?.data?.message?err.response.data.message:"Error")
-  })
-}
-
-useEffect(()=>{
-  if(pageLoaded===false) fetchTasks();
-}, [pageLoaded])
-
+    await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/get/`+id,{
+      headers:{
+        'Authorization': 'Bearer '+token
+      }
+    })
+    .then((res)=>{
+      console.log(res)
+      console.log(initTasks(res.data.data));
+      setTaskks(initTasks(res.data.data))
+      setPageLoaded(true)
+    })
+  }
 
   const [varb1, setVarb1]=React.useState("contained")
 const [varb2, setVarb2]=React.useState("outlined")
@@ -415,6 +441,9 @@ const buttonToggle2 = () => {
   };
 
   const handleClick = (task: Task) => {
+    setAssignee(task.assignee)
+    setAssigner(task.assigner)
+    console.log(task)
     console.log("On Click event Id:" + task.id);
   };
 
@@ -471,12 +500,48 @@ const buttonToggle2 = () => {
   }
   const [hidden, setHidden]=useState(true)
 
-  if(!pageLoaded){
-    return <CircularLoader />;
+  
+ if(!urlAfterGanttChart){
+    if(!pageLoadedO){
+      organisationsGetter();
+      return <h1>LOADING</h1>
+    }
+    else{
+      console.log(organisations)
+      return(<>
+        <InputLabel id="demo-simple-select-label">Organisation</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+     value={organisationID}
+    label="Organisation"
+    onChange={(e)=>{
+      console.log(e)
+      setOrganisationID(e.target.value)
+      router.push("/gantt-chart?id="+e.target.value)
+    }}
+  >
+    {organisations?.map((item,index)=>{
+      return(
+      <MenuItem value={item.id}>{item.Name}</MenuItem>
+      )
+    })}
+    
+  </Select></>
+      )
+    }
+    
+    
   }
   else{
+    if(!pageLoaded){
+      tasksGetter(organisationID);
+      return <h1>LOADINF</h1>
+      
+    }
+    else{
   return (
-    <Nested display={hidden==false?"block":"none"}>
+    <Nested tasks={taskks} display={hidden==false?"block":"none"}>
 
    <div style={{display: "flex",}} >
     {!hidden && <ArrowBackIosNewIcon onClick={()=>setHidden(!hidden)} style={{padding:"0", margin: "0", marginTop: "40vh", color: "#131311", backgroundColor: "#ffc93c", cursor:"pointer" }}></ArrowBackIosNewIcon>
@@ -490,7 +555,7 @@ const buttonToggle2 = () => {
         id="free-solo-2-demo"
         disableClearable
         sx={{width: "320px"}}
-        options={tasks.map((option) => option.name)}
+        options={tasks?.map((option) => option.name)}
         onChange={filteringFunction}
         renderInput={(params) => (
           <TextField
@@ -513,7 +578,8 @@ const buttonToggle2 = () => {
         
       </div>
       
-     
+     <Typography>Assigner: {assigner}</Typography>
+     <Typography>Assignee: {assignee}</Typography>
       <Gantt
         tasks={taskks}
         viewMode={view}
@@ -532,7 +598,7 @@ const buttonToggle2 = () => {
     </div>
     </div>
     </Nested>
-  );}
+  );}}
 };
 Page.getLayout = (page) =>  <DashboardLayout isMinimised={true}>{page}</DashboardLayout>;
 

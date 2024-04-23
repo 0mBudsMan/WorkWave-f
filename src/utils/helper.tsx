@@ -8,20 +8,24 @@ function getRandomValueFromArray(array) {
 const randomColorPallete = ["#8CB9BD", "blue", "#12372A", "#436850", "#FF5733", "#FFD700"];
    
 export function initTasks(tasksArray) {
+    
+    console.log(tasksArray)
     const currentDate = new Date();
     const toreturn: Task[] = [];
      
     for (let i = 0; i < tasksArray.length; i++) {
         toreturn.push({
-            start: new Date(tasksArray[i].StartDate),
-            end: new Date(tasksArray[i].EndDate),
-            name: tasksArray[i].Description,
+            start: new Date(tasksArray[i].start_date),
+            end: new Date(tasksArray[i].end_date),
+            name: tasksArray[i].description,
             id: tasksArray[i].id,
-            progress: tasksArray[i].project,
+            progress: tasksArray[i].progress,
             dependencies: [],
             type: "project",
             hideChildren: true,
             displayOrder: i + 1,
+            assignee: tasksArray[i].assignee_name,
+            assigner: tasksArray[i].assigner_name,
             styles: {
                 progressColor: getRandomValueFromArray(randomColorPallete),
                 progressSelectedColor: getRandomValueFromArray(randomColorPallete),
