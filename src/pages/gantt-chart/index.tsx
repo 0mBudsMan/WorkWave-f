@@ -329,7 +329,7 @@ const Page = () => {
   const [error, setError] = useState(null);
   const [taskks, setTaskks] = useState(tasks);
   async function fetchTasks() {
-  await axios.get("http://localhost:8000/api/v1/member/getmember/"+"66204399857b4a2ecf7f0491")
+  await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/member/getmember/"+"66204399857b4a2ecf7f0491`)
   .then((res)=>{
     
     // setTaskks(res.data.data.TodoTasks)

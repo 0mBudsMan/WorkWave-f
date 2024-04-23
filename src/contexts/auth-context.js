@@ -171,7 +171,7 @@ export const AuthProvider = (props) => {
 			email: "",
 			token: ""
 		};
-		await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/login`,data)
+		await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,data)
 		.then((res)=>{
 			// alert(res.data.data.message)
 			console.log(res)
@@ -212,7 +212,7 @@ export const AuthProvider = (props) => {
 			email: "",
 			token: ""
 		};
-		await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/register`,data)
+		await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URLL}/api/v1/auth/register`,data)
 		.then((res)=>{
 			// alert(res.data.data.message)
 			console.log(res)
