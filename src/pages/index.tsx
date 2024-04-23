@@ -16,10 +16,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-
-
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-
+import { userGetter } from "@/utils/idgetter";
 import NameSection from "@/components/NameSection";
 
 const Dashboard = () => {
@@ -51,6 +51,59 @@ const Dashboard = () => {
     createOrg('GeekHaven', 'CEO', '69'),
 
   ]
+
+  const [tasks, setTasks] = useState([]);
+  const [organizations, setOrganizations] = useState([]);
+  const [user, setUser] = useState([]);
+  const userId = userGetter();
+
+  // function for 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if(token){
+      // fetch user info
+      axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/getuser`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })  .then(response => {
+        console.log("User successfully fetched");
+        console.log(response.data);
+      })  .catch(error => { 
+        console.error('Error fetching user:', error);
+      }); 
+    }
+    // Fetch tasks from backend
+    // axios.get('/api/v1/tasks')
+    //   .then(response => {
+    //     setTasks(response.data.tasks);
+    //     console.log(response.data.tasks);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching tasks:', error);
+    //   });
+
+    // Fetch organizations from backend
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getOrganisations`)
+      .then(response => {
+        console.log(userId.id);
+        console.log("Organizations successfully fetched");
+        console.log(response.data);
+        setOrganizations(response.data.data);
+      })
+      .catch(error => {
+        console.error('Error fetching organizations:', error);
+      });
+
+  // fetch user info
+  // axios.get('/api/v1/user')
+  //     .then(response => {
+  //       setOrganizations(response.data.organizations);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching organizations:', error);
+  //     });
+   }, []); 
 
 
   return (
@@ -115,18 +168,18 @@ const Dashboard = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {alsoRows.map((row) => (
+                  {organizations.map((org) => (
                     <TableRow
-                      key={row.name}
+                      key={org.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       
                       <TableCell component="th" scope="row">
-                        {row.name}
+                        {org.Name}
                       </TableCell>
 
                         <TableCell align="right" component="th" scope="row">
-                          {row.role}
+                          Role
                         </TableCell>
                       
 
