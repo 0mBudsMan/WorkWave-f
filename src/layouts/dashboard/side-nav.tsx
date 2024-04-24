@@ -47,9 +47,14 @@ const inforouting=[
 	},
 	
 	{
-		path: "projects",
+		path: "taskform",
 		class: "Project",
 		subClass: "My_Projects"
+	},
+	{
+		path: "orgform",
+		class: "Project",
+		subClass: "My_Projects1"
 	},
 	
 	{
@@ -286,11 +291,19 @@ export const SideNav = (props) => {
 							<List component="div" disablePadding>
 								<ListItemButton
 									component={NextLink}
-									href="/projects"
+									href="/taskform"
 									sx={{ pl: 4,}}
 									className="My_Projects"
 								>
-									<ListItemText className="My_Projects" primary="My Projects" />
+									<ListItemText className="My_Projects" primary="Tasks Form" />
+								</ListItemButton>
+								<ListItemButton
+									component={NextLink}
+									href="/orgform"
+									sx={{ pl: 4,}}
+									className="My_Projects1"
+								>
+									<ListItemText className="My_Projects1" primary="Organisations Form" />
 								</ListItemButton>
 								
 								

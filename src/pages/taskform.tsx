@@ -95,7 +95,7 @@ function Temp() {
 		const data = {
 			organisationID: orgid
 		}
-		await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/getMembers/`+urlAfterGanttChart, {
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getMembers/`+urlAfterGanttChart, {
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
@@ -112,7 +112,7 @@ function Temp() {
 
 	async function org(){
 		const token = tokenGetter();
-		await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/getOrganisations`, {
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getOrganisations`, {
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
@@ -167,7 +167,33 @@ function Temp() {
 			description: Yup.string().required("Desc required"),
 		}),
 		onSubmit: async (values, helpers) => {
-			console.log(values)
+			async function submiter(){
+				const currentUrl = router.asPath;
+	const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
+				const bodyParameters = {
+					Title: values.title,
+					Description: values.description,
+					OrganizationId: urlAfterGanttChart,
+					StartDate: new Date(values.startDate),
+					EndDate: new Date (values.endDate),
+					Points: 0,
+					dependentTaskIds: [],
+					assigneeId: values.assignee
+				}
+				const token = tokenGetter();
+				const config = {
+					headers: { Authorization: `Bearer ${token}` }
+				};
+				await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/task/create`, bodyParameters, config)
+				.then((res)=>{
+					alert("TASK CREAMTED")
+				})
+				.catch((err)=>{
+					console.log(err)
+					alert("error")
+				})
+			}
+			submiter()
 		},
 	});
 
@@ -198,13 +224,15 @@ function Temp() {
 	if (!orgSelected) {
 		console.log(organisations);
 		return (
-			<div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+			<Grid container spacing={2}>
 				{organisations?.map((item, index) => (
-					<a href = {`/taskform?${item.id}`}>
-					<Card   key={index} sx={{ width: 345, marginRight: 5 }}>
+					
+						<Grid xs={4} mt={2}>
+							<a href = {`/taskform?${item.id}`}>
+					<Card   key={index} sx={{marginRight: 5 }}>
 						<CardMedia
-							sx={{ height: 140 }}
-							image="https://picsum.photos/100/50"
+							sx={{ height: 300 }}
+							image="https://picsum.photos/500/500"
 							title="green iguana"
 						/>
 						<CardContent>
@@ -212,9 +240,9 @@ function Temp() {
 								{item.Name}
 							</Typography>
 						</CardContent>
-					</Card></a>
+					</Card></a> </Grid>
 				))}
-			</div>
+			</Grid>
 		);
 	}
 	

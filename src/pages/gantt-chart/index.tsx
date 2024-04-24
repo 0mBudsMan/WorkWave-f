@@ -347,7 +347,7 @@ const Page = () => {
   async function organisationsGetter() {
   
     const token = tokenGetter();
-    await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/getOrganisations`, {
+    await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getOrganisations`, {
       headers:{
         'Authorization': 'Bearer '+token
       }
@@ -362,7 +362,7 @@ const Page = () => {
   async function tasksGetter(id){
     const token = tokenGetter();
     
-    await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/get/`+id,{
+    await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/get/`+id,{
       headers:{
         'Authorization': 'Bearer '+token
       }

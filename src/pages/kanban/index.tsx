@@ -19,7 +19,7 @@ const Overview = () => {
     const [pageLoaded, setPageLoaded] = useState(false)
     const tempID = "6624056d3d435961dc7f6615";
     async function getTasks() {
-        await axios.get("https://se-backend-xkt0.onrender.com/api/v1/member/getmember/"+tempID)
+        await axios.get("http://localhost:8000/"+tempID)
         .then((res)=>{
             console.log(kanbanInit(res.data.data.TodoTasks, "OM"))
             setData(kanbanInit(res.data.data.TodoTasks, "OM"));
