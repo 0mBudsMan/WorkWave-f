@@ -82,56 +82,56 @@ function Temp() {
 	const [organisations, setOrganisations] = useState([]);
 	const router = useRouter();
 	// let orgSelected = false;
-	useEffect(()=>{
+	useEffect(() => {
 		const currentUrl = router.asPath;
-	const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
-	setOrgSelected(urlAfterGanttChart?true:false);
-	},[])
-	
+		const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
+		setOrgSelected(urlAfterGanttChart ? true : false);
+	}, [])
+
 	async function asg(orgid) {
 		const token = tokenGetter();
 		const currentUrl = router.asPath;
-	const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
+		const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
 		const data = {
 			organisationID: orgid
 		}
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getMembers/`+urlAfterGanttChart, {
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getMembers/` + urlAfterGanttChart, {
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
-			
+
 		}
 		)
 			.then((res) => {
 				console.log(res)
 				setAssignee(res.data.data)
-				
+
 				setLoaded(true)
 			})
 	}
 
-	async function org(){
+	async function org() {
 		const token = tokenGetter();
 		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getOrganisations`, {
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
-			
+
 		}
 		)
 			.then((res) => {
 				setOrganisations(res.data.data)
 				setOrgLoaded(true)
-				
+
 			})
-			.catch((err)=>{
+			.catch((err) => {
 				alert("ERR")
 			})
-		
+
 	}
 
 
-	
+
 
 	const pastMonth = new Date();
 
@@ -167,33 +167,41 @@ function Temp() {
 			description: Yup.string().required("Desc required"),
 		}),
 		onSubmit: async (values, helpers) => {
-			async function submiter(){
-				const currentUrl = router.asPath;
-	const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
-				const bodyParameters = {
-					Title: values.title,
-					Description: values.description,
-					OrganizationId: urlAfterGanttChart,
-					StartDate: new Date(values.startDate),
-					EndDate: new Date (values.endDate),
-					Points: 0,
-					dependentTaskIds: [],
-					assigneeId: values.assignee
-				}
-				const token = tokenGetter();
-				const config = {
-					headers: { Authorization: `Bearer ${token}` }
-				};
-				await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/task/create`, bodyParameters, config)
-				.then((res)=>{
-					alert("TASK CREAMTED")
+			const currentUrl = router.asPath;
+			const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
+			let data = JSON.stringify({
+				"Title": values.title,
+				"Description": values.description,
+				"OrganizationId": urlAfterGanttChart,
+				"StartDate": "2024-04-24T00:00:00Z",
+				"assigneeId": values.assignee,
+				"EndDate": "2024-04-28T00:00:00Z",
+				"Points": 20,
+				"dependentTasksIds": []
+			});
+			const token = tokenGetter();
+
+			let config = {
+				method: 'post',
+				maxBodyLength: Infinity,
+				url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/task/create`,
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer '+token
+				},
+				data: data
+			};
+
+			axios.request(config)
+				.then((response) => {
+					alert("TASK CREATED")
+					console.log(JSON.stringify(response.data));
 				})
-				.catch((err)=>{
-					console.log(err)
-					alert("error")
-				})
-			}
-			submiter()
+				.catch((error) => {
+					alert("ERROR")
+					console.log(error);
+				});
+			// submiter()
 		},
 	});
 
@@ -218,7 +226,7 @@ function Temp() {
 			);
 		}
 	}
-	if(!orgLoaded){
+	if (!orgLoaded) {
 		org();
 	}
 	if (!orgSelected) {
@@ -226,30 +234,30 @@ function Temp() {
 		return (
 			<Grid container spacing={2}>
 				{organisations?.map((item, index) => (
-					
-						<Grid xs={4} mt={2}>
-							<a href = {`/taskform?${item.id}`}>
-					<Card   key={index} sx={{marginRight: 5 }}>
-						<CardMedia
-							sx={{ height: 300 }}
-							image="https://picsum.photos/500/500"
-							title="green iguana"
-						/>
-						<CardContent>
-							<Typography variant="h5" component="div">
-								{item.Name}
-							</Typography>
-						</CardContent>
-					</Card></a> </Grid>
+
+					<Grid xs={4} mt={2}>
+						<a href={`/taskform?${item.id}`}>
+							<Card key={index} sx={{ marginRight: 5 }}>
+								<CardMedia
+									sx={{ height: 300 }}
+									image="https://picsum.photos/500/500"
+									title="green iguana"
+								/>
+								<CardContent>
+									<Typography variant="h5" component="div">
+										{item.Name}
+									</Typography>
+								</CardContent>
+							</Card></a> </Grid>
 				))}
 			</Grid>
 		);
 	}
-	
-	
-			// return <h1>HEYGy</h1>
-		
-	
+
+
+	// return <h1>HEYGy</h1>
+
+
 	else if (!loaded) {
 		asg("662075d67419b225c25721c9")
 		return <h1>LOADING</h1>
@@ -280,8 +288,8 @@ function Temp() {
 						</Typography>
 						<Grid container spacing={2}>
 							<Grid xs={4} mt={3}>
-								
-								
+
+
 								<InputLabel id="demo-simple-select-label">Assignee</InputLabel>
 								<Select
 									labelId="demo-simple-select-label"
@@ -300,16 +308,16 @@ function Temp() {
 									onBlur={formik.handleBlur}
 									onChange={formik.handleChange}
 									value={formik.values.assignee}
-									
+
 								>
 									{
-									 assignee.map((item,indes)=>{
-										return(
-											<MenuItem value={item.UserId}>{item.User.Email}</MenuItem>
-										)
-									 })
+										assignee.map((item, indes) => {
+											return (
+												<MenuItem value={item.UserId}>{item.User.Email}</MenuItem>
+											)
+										})
 									}
-									
+
 								</Select>
 							</Grid>
 							<Grid
