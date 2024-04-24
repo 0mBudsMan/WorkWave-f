@@ -20,7 +20,7 @@ export function initTasks(tasksArray) {
             name: tasksArray[i].description,
             id: tasksArray[i].id,
             progress: tasksArray[i].progress,
-            dependencies: [],
+            dependencies: tasksArray[i].dependentTasksIds,
             type: "project",
             hideChildren: true,
             displayOrder: i + 1,
@@ -29,6 +29,7 @@ export function initTasks(tasksArray) {
             styles: {
                 progressColor: getRandomValueFromArray(randomColorPallete),
                 progressSelectedColor: getRandomValueFromArray(randomColorPallete),
+                backgroundColor: getRandomValueFromArray(randomColorPallete)
             },
         })
     }

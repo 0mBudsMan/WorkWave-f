@@ -109,10 +109,14 @@ function Temp() {
 				setLoaded(true)
 			})
 	}
-
+	
 	async function org() {
+		const data = {
+			id: userGetter().id
+		}
 		const token = tokenGetter();
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getOrganisations`, {
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/getuser`, {
+			data,
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
@@ -120,9 +124,9 @@ function Temp() {
 		}
 		)
 			.then((res) => {
-				setOrganisations(res.data.data)
+				setOrganisations(res.data.data.Memberships)
 				setOrgLoaded(true)
-
+				console.log(res)
 			})
 			.catch((err) => {
 				alert("ERR")
@@ -234,9 +238,9 @@ function Temp() {
 		return (
 			<Grid container spacing={2}>
 				{organisations?.map((item, index) => (
-
+					
 					<Grid xs={4} mt={2}>
-						<a href={`/taskform?${item.id}`}>
+						<a href={`/taskform?${item.Organization.id}`}>
 							<Card key={index} sx={{ marginRight: 5 }}>
 								<CardMedia
 									sx={{ height: 300 }}
@@ -245,7 +249,7 @@ function Temp() {
 								/>
 								<CardContent>
 									<Typography variant="h5" component="div">
-										{item.Name}
+										{item.Organization.Name}
 									</Typography>
 								</CardContent>
 							</Card></a> </Grid>
@@ -313,7 +317,7 @@ function Temp() {
 									{
 										assignee.map((item, indes) => {
 											return (
-												<MenuItem value={item.UserId}>{item.User.Email}</MenuItem>
+												<MenuItem value={item.id}>{item.User.Email}</MenuItem>
 											)
 										})
 									}
