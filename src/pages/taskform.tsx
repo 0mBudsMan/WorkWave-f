@@ -172,15 +172,24 @@ function Temp() {
 			description: Yup.string().required("Desc required"),
 		}),
 		onSubmit: async (values, helpers) => {
+			function formatDateToDateTime(dateString) {
+				// Split the input string into day, month, and year
+				const parts = dateString.split('/');
+				// Create a new Date object (month is 0-based in JavaScript, so subtract 1 from the month)
+				const date = new Date(parts[2], parts[1] - 1, parts[0]);
+				// Convert the date to your desired format, for example:
+				const dateTimeString = date.toISOString(); // This will give you a date-time string in ISO format (YYYY-MM-DDTHH:mm:ss.sssZ)
+				return dateTimeString;
+			}
 			const currentUrl = router.asPath;
 			const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
 			let data = JSON.stringify({
 				"Title": values.title,
 				"Description": values.description,
 				"OrganizationId": urlAfterGanttChart,
-				"StartDate": "2024-04-24T00:00:00Z",
+				"StartDate": formatDateToDateTime(values.startDate),
 				"assigneeId": values.assignee,
-				"EndDate": "2024-04-28T00:00:00Z",
+				"EndDate": formatDateToDateTime(values.endDate),
 				"Points": 20,
 				"dependentTasksIds": []
 			});

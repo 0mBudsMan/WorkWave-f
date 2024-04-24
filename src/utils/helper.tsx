@@ -14,13 +14,14 @@ export function initTasks(tasksArray) {
     const toreturn: Task[] = [];
      
     for (let i = 0; i < tasksArray.length; i++) {
+       
         toreturn.push({
             start: new Date(tasksArray[i].start_date),
             end: new Date(tasksArray[i].end_date),
             name: tasksArray[i].description,
             id: tasksArray[i].id,
             progress: tasksArray[i].progress,
-            dependencies: tasksArray[i].dependentTasksIds,
+            dependencies: tasksArray[i].parents,
             type: "project",
             hideChildren: true,
             displayOrder: i + 1,
