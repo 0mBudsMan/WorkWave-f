@@ -29,7 +29,7 @@
 		"@mui/x-tree-view": "^6.17.0",
 		"@react-spring/web": "^9.7.3",
 		"@syncfusion/ej2-react-kanban": "^25.1.35",
-		"@yami-beta/react-circular-loading": "^3.0.0",
+		
 		"apexcharts": "3.37.0",
 		"axios": "^1.6.8",
 		"axios-cookiejar-support": "^5.0.0",
