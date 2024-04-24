@@ -537,7 +537,7 @@ const buttonToggle2 = () => {
   else{
     if(!pageLoaded){
       tasksGetter(organisationID);
-      return <h1>LOADINF</h1>
+      return <CircularLoader />
       
     }
     else{

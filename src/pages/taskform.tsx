@@ -45,6 +45,7 @@ import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { start } from "repl";
 import { userGetter, tokenGetter } from "../utils/idgetter"
+import CircularLoader from "@/components/CircularLoader.js";
 
 type ValuePiece = Date | null;
 
@@ -264,7 +265,7 @@ function Temp() {
 
 	else if (!loaded) {
 		asg("662075d67419b225c25721c9")
-		return <h1>LOADING</h1>
+		return <CircularLoader />
 	}
 	else {
 
