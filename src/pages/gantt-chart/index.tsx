@@ -345,7 +345,7 @@ const Page = () => {
   const urlAfterGanttChart = currentUrl.split('/gantt-chart?')[1];
 
   async function organisationsGetter() {
-    alert()
+  
     const token = tokenGetter();
     await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/organisation/getOrganisations`, {
       headers:{
