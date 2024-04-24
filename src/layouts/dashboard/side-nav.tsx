@@ -63,9 +63,14 @@ const inforouting=[
 		subClass: "GanttChart"
 	},
 	{
-		path: "kanban",
+		path: "kanban_assignee",
 		class: "ScopeManagement",
-		subClass: "Kanban"
+		subClass: "Kanban1"
+	},
+	{
+		path: "kanban_assigner",
+		class: "ScopeManagement",
+		subClass: "Kanban2"
 	}
 	
 	//rest of the routes will be added once those pages are made
@@ -341,11 +346,23 @@ export const SideNav = (props) => {
 								
 								<ListItemButton
 									component={NextLink}
-									href="/kanban"
+									href="/kanban_assignee"
 									sx={{ pl: 4 }}
-									className="Kanban"
+									className="Kanban1"
 								>
-									<ListItemText className="Kanban" primary="Kanban Board" />
+									<ListItemText className="Kanban1" primary="Kanban Board For Assigee"  />
+								</ListItemButton>
+							
+							</List>
+							<List component="div" disablePadding>
+								
+								<ListItemButton
+									component={NextLink}
+									href="/kanban_assigner"
+									sx={{ pl: 4 }}
+									className="Kanban2"
+								>
+									<ListItemText className="Kanban2" primary="Kanban Board For Assigner"  />
 								</ListItemButton>
 							
 							</List>

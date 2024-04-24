@@ -40,7 +40,7 @@ export function initTasks(tasksArray) {
     return toreturn;
 }
 
-export function kanbanInit(tasksArray, name) {
+export function kanbanInit(tasksArray) {
     let toReturn = [];
     
     // {
@@ -59,18 +59,35 @@ export function kanbanInit(tasksArray, name) {
     // },
     for(let i=0;i<tasksArray.length;i++){
         let tempArray = [];
+        let status="";
+        switch (tasksArray[i].Status){
+            case "COMPLETED":
+                status = "Close"
+                break;
+            case "PENDING":
+                status = "Open"
+                break;
+            case "IN_PROGRESS":
+                status = "InProgress"
+                break;
+            case "IN_REVIEW":
+                status = "Review"
+                break;
+            default:
+                status = "InProgress"
+        }
         toReturn.push({
             Id: tasksArray[i].id,
             Title: tasksArray[i].Title,
-            Status: "InProgress",
+            Status: status,
             Summary: tasksArray[i].Description,
             Type: "Software Engineering Project",
             Priority: "Normal",
             Tags: "IIIT-A, SE",
             Estimate: "3.5",
-            Assignee: name,
+            Assignee: tasksArray[i].orgName,
             Color: getRandomValueFromArray(randomColorPallete),
-            ClassName: ['e-'+name, 'e-normal']
+            ClassName: ['e-'+tasksArray[i].orgName.replace(/\s/g, ''), 'e-normal']
 
         })
     }

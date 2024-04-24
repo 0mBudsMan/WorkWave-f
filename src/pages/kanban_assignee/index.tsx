@@ -13,17 +13,68 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { kanbanInit } from '@/utils/helper';
 import  CircularLoader  from '@/components/CircularLoader';
+import { userGetter, tokenGetter } from "../../utils/idgetter"
 // import './App.css';
 const Overview = () => {
     const [data, setData] = useState([]);
     const [pageLoaded, setPageLoaded] = useState(false)
     const tempID = "6624056d3d435961dc7f6615";
-    async function getTasks() {
-        await axios.get("http://localhost:8000/"+tempID)
+
+    async function updater(){
+        const token = tokenGetter();
+        const dataa = {
+            taskArr: data
+        };
+        
+        const config = {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        };
+        await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/task/updateTask`,
+            dataa,
+            config
+        )
         .then((res)=>{
-            console.log(kanbanInit(res.data.data.TodoTasks, "OM"))
-            setData(kanbanInit(res.data.data.TodoTasks, "OM"));
-            setPageLoaded(true);
+            alert("TASK UPDATED SUCCESSFULLY");
+            setPageLoaded(false)
+        })
+        .catch((err)=>{
+            console.log(err)
+            alert("Error in updating task")
+        })
+    }
+    async function getTasks() {
+        const token = tokenGetter();
+        const data = 
+        await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/getuser`,{
+
+            headers: {
+				'Authorization': 'Bearer ' + token
+			}
+        })
+        .then((res)=>{
+            // console.log(kanbanInit(res.data.data.TodoTasks, "OM"))
+            // setData(kanbanInit(res.data.data.TodoTasks, "OM"));
+            // setPageLoaded(true);
+            console.log(res.data.data.Memberships)
+            const temp = res.data.data.Memberships
+            let arr = [];
+            temp?.map((item,index)=>{
+                item?.TodoTasks?.map((item1,index1)=>{
+                    const tempData = {
+                        ...item1,
+                        orgName: item.Organization.Name
+                    }
+                    arr.push(tempData)
+
+                })
+            })
+            console.log(arr)
+            console.log(kanbanInit(arr))
+           setData(kanbanInit(arr))
+           setPageLoaded(true)
+            
         })
         .catch((err)=>{
             console.log(err)
@@ -31,9 +82,9 @@ const Overview = () => {
           })
     }
 
-    useEffect(()=>{
-        if(pageLoaded===false) getTasks();
-      }, [pageLoaded])
+    // useEffect(()=>{
+    //     if(pageLoaded===false) getTasks();
+    //   }, [pageLoaded])
     // let data: Object[] = extend(
     //     [],
     //     (dataSource as { [key: string]: Object }).cardData,
@@ -92,6 +143,7 @@ const Overview = () => {
         return (assignee.match(/\b(\w)/g) as string[]).join("").toUpperCase();
     };
     if(!pageLoaded){
+        getTasks()
     return <CircularLoader />;
     }
     else{
@@ -145,8 +197,8 @@ const Overview = () => {
                 </div>
             </div>
             <Button onClick={()=>{
-                console.log(data)
-            }}>hey</Button>
+                updater()
+            }}>MAKE CHANGES</Button>
         </div>
     );}
 }

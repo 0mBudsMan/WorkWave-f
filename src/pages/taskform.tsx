@@ -116,7 +116,7 @@ function Temp() {
 		}
 		const token = tokenGetter();
 		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/getuser`, {
-			data,
+			
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
