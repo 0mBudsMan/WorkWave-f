@@ -71,6 +71,11 @@ const inforouting=[
 		path: "kanban_assigner",
 		class: "ScopeManagement",
 		subClass: "Kanban2"
+	},
+	{
+		path: "editprof",
+		class: "ScopeManagement",
+		subClass: "EditProf"
 	}
 	
 	//rest of the routes will be added once those pages are made
@@ -363,6 +368,18 @@ export const SideNav = (props) => {
 									className="Kanban2"
 								>
 									<ListItemText className="Kanban2" primary="Kanban Board For Assigner"  />
+								</ListItemButton>
+							
+							</List>
+							<List component="div" disablePadding>
+								
+								<ListItemButton
+									component={NextLink}
+									href="/editprof"
+									sx={{ pl: 4 }}
+									className="EditProf"
+								>
+									<ListItemText className="EditProf" primary="Edit Profile"  />
 								</ListItemButton>
 							
 							</List>
