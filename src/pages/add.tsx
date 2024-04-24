@@ -85,18 +85,18 @@ function Temp() {
 	// let orgSelected = false;
 	useEffect(() => {
 		const currentUrl = router.asPath;
-		const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
+		const urlAfterGanttChart = currentUrl.split('/add?')[1];
 		setOrgSelected(urlAfterGanttChart ? true : false);
 	}, [])
 
 	async function asg(orgid) {
 		const token = tokenGetter();
 		const currentUrl = router.asPath;
-		const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
+		const urlAfterGanttChart = currentUrl.split('/add?')[1];
 		const data = {
 			organisationID: orgid
 		}
-		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/getMembers/` + urlAfterGanttChart, {
+		await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/getusers/`, {
 			headers: {
 				'Authorization': 'Bearer ' + token
 			}
@@ -106,7 +106,7 @@ function Temp() {
 			.then((res) => {
 				console.log(res)
 				setAssignee(res.data.data)
-
+				console.log(res.data.data)
 				setLoaded(true)
 			})
 	}
@@ -155,58 +155,36 @@ function Temp() {
 		initialValues: {
 			assignee: "",
 			// organisation: "",
-			startDate: "",
-			endDate: "",
-			progress: 0,
-			title: "",
-			description: "",
+			role: ""
 		},
 		validationSchema: Yup.object({
 			assignee: Yup.string().required("Assignee is required"),
-			// organisation: Yup.string().required("Assignee is required"),
-			startDate: Yup.string().required("Start Date is required"),
-			endDate: Yup.string().required("End Date is required"),
-			// managerName: Yup.string().required("Manager Name is required"),
-			progress: Yup.number().required("Progress is required"),
-			title: Yup.string().required("Title is required"),
-			description: Yup.string().required("Desc required"),
+			// organisation: Yup.string().required("Assignee is required")
+			role: Yup.string().required("Role is required"),
+			
 		}),
 		onSubmit: async (values, helpers) => {
+			console.log(values)
+			// submiter()const currentUrl = router.asPath;
 			const currentUrl = router.asPath;
-			const urlAfterGanttChart = currentUrl.split('/taskform?')[1];
-			let data = JSON.stringify({
-				"Title": values.title,
-				"Description": values.description,
-				"OrganizationId": urlAfterGanttChart,
-				"StartDate": "2024-04-24T00:00:00Z",
-				"assigneeId": values.assignee,
-				"EndDate": "2024-04-28T00:00:00Z",
-				"Points": 20,
-				"dependentTasksIds": []
-			});
+		const urlAfterGanttChart = currentUrl.split('/add?')[1];
+			const data = {
+				OrganisationId: urlAfterGanttChart,
+				userId: values.assignee,
+				userRole: values.role
+			}
 			const token = tokenGetter();
-
-			let config = {
-				method: 'post',
-				maxBodyLength: Infinity,
-				url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/task/create`,
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer '+token
-				},
-				data: data
-			};
-
-			axios.request(config)
-				.then((response) => {
-					alert("TASK CREATED")
-					console.log(JSON.stringify(response.data));
-				})
-				.catch((error) => {
-					alert("ERROR")
-					console.log(error);
-				});
-			// submiter()
+				
+				const config = {
+					headers: { Authorization: `Bearer ${token}` }
+				};
+			await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/organisation/addMember`,data,config)
+			.then((res)=>{
+				alert("ADDED")
+			})
+			.catch((err)=>{
+				alert("ERR")
+			})
 		},
 	});
 
@@ -216,21 +194,7 @@ function Temp() {
 
 	const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-	let footer = <p>Please pick the first day.</p>;
-	if (range?.from) {
-		if (!range.to) {
-			footer = <p>{format(range.from, "PPP")}</p>;
-			formik.values.startDate = format(range.from, "dd/MM/yyyy");
-		} else if (range.to) {
-			formik.values.startDate = format(range.from, "dd/MM/yyyy");
-			formik.values.endDate = format(range.to, "dd/MM/yyyy");
-			footer = (
-				<p>
-					{format(range.from, "PPP")}–{format(range.to, "PPP")}
-				</p>
-			);
-		}
-	}
+	
 	if (!orgLoaded) {
 		org();
 	}
@@ -241,7 +205,7 @@ function Temp() {
 				{organisations?.map((item, index) => (
 					
 					<Grid xs={4} mt={2}>
-						<a href={`/taskform?${item.Organization.id}`}>
+						<a href={`/add?${item.Organization.id}`}>
 							<Card key={index} sx={{ marginRight: 5 }}>
 								<CardMedia
 									sx={{ height: 300 }}
@@ -265,12 +229,12 @@ function Temp() {
 
 	else if (!loaded) {
 		const currentUrl = router.asPath;
-  const urlAfterForm = currentUrl.split('/taskform?')[1];
+  const urlAfterForm = currentUrl.split('/add?')[1];
 		asg(urlAfterForm)
 		return <CircularLoader />
 	}
 	else {
-
+		console.log(assignee)
 		return (
 			<form noValidate onSubmit={formik.handleSubmit}>
 				<div
@@ -320,148 +284,43 @@ function Temp() {
 									{
 										assignee.map((item, indes) => {
 											return (
-												<MenuItem value={item.id}>{item.User.Email}</MenuItem>
+												<MenuItem value={item.id}>{item.FirstName + " " + item.LastName}</MenuItem>
 											)
 										})
 									}
 
 								</Select>
 							</Grid>
-							<Grid
-								xs={8}
-								mt={3}
-								direction={"column"}
-								alignItems={"center"}
-								justifyContent={"center"}
-							>
-								<Typography textAlign={"center"} ml={2}>
-									Date Range
-								</Typography>
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "row",
-										width: "100%",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
+							<Grid xs={11} mt={3}>
+
+
+								<InputLabel id="demo-simple-select-label">Role</InputLabel>
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									error={
+										!!(
+											formik.touched.role &&
+											formik.errors.role
+										)
+									}
+									helperText={
+										formik.touched.role &&
+											formik.errors.role
+									}
+									name="role"
+									onBlur={formik.handleBlur}
+									onChange={formik.handleChange}
+									value={formik.values.role}
+
 								>
-									{formik.errors.startDate && (
-										<p
-											style={{
-												color: "red",
-												marginLeft: "12px",
-											}}
-										>
-											{formik.errors.startDate}
-										</p>
-									)}
-									<DayPicker
-										id="test"
-										mode="range"
-										defaultMonth={pastMonth}
-										selected={range}
-										footer={footer}
-										onSelect={(e) => {
-											setRange(e);
-											if (e) {
-												if (e.from) {
-													formik.values.startDate =
-														format(
-															e.from,
-															"dd/MM/yyyy"
-														);
-												}
-												if (e.to) {
-													formik.values.endDate = format(
-														e.to,
-														"dd/MM/yyyy"
-													);
-												}
-											}
-										}}
-										captionLayout="dropdown-buttons"
-										fromYear={2000}
-										toYear={2100}
-									/>
-								</div>
+									
+									<MenuItem value="ASSIGNEE">{"ASSIGNEE"}</MenuItem>
+									<MenuItem value="ASSIGNER">{"ASSIGNER"}</MenuItem>
+
+								</Select>
 							</Grid>
-
-							<Grid xs={4}>
-								<Typography ml={2}>Enter Title</Typography>
-								<TextField
-									id="standard-basic"
-									sx={{ width: "80%", marginLeft: "18px" }}
-
-									variant="standard"
-									error={
-										!!(
-											formik.touched.title &&
-											formik.errors.title
-										)
-									}
-									helperText={
-										formik.touched.title &&
-										formik.errors.title
-									}
-									name="title"
-									onBlur={formik.handleBlur}
-									onChange={formik.handleChange}
-									value={formik.values.title}
-								/>
-							</Grid>
-							<Grid xs={4}>
-								<Typography ml={2}>Description</Typography>
-								<TextField
-									id="standard-basic"
-									sx={{ width: "80%", marginLeft: "18px" }}
-
-									variant="standard"
-									error={
-										!!(
-											formik.touched.description &&
-											formik.errors.description
-										)
-									}
-									helperText={
-										formik.touched.description &&
-										formik.errors.description
-									}
-									name="description"
-									onBlur={formik.handleBlur}
-									onChange={formik.handleChange}
-									value={formik.values.description}
-								/>
-							</Grid>
-							<Grid xs={4}>
-								<Typography ml={2}>Enter Progress</Typography>
-								<TextField
-									id="standard-basic"
-									sx={{ width: "80%", marginLeft: "18px" }}
-
-									variant="standard"
-									error={
-										!!(
-											formik.touched.progress &&
-											formik.errors.progress
-										)
-									}
-									helperText={
-										formik.touched.progress &&
-										formik.errors.progress
-									}
-									name="projectValue"
-									type="number"
-									onBlur={formik.handleBlur}
-									onChange={formik.handleChange}
-									value={formik.values.projectValue}
-								/>
-							</Grid>
-
-
-							<Grid xs={4} mt={6} mb={6}>
-
-							</Grid>
+						
 						</Grid>
 						<Box
 							display={"flex"}
