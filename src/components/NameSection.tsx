@@ -41,7 +41,7 @@ const NameSection = ({ user }) => {
         <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", marginLeft: "50px"}}>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
           <Typography mr={2} fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={600} fontSize={30}>{FirstName} {LastName}</Typography>
-          <Typography fontFamily={'Poppins, sans-serif'} color={"#31363F"} fontWeight={400} fontSize={15}>They/Them</Typography>
+          <Typography fontFamily={'Poppins, sans-serif'} color={"#31363F"} fontWeight={400} fontSize={15}>His/Him</Typography>
           </div>
           <div>
             <Typography fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={400} fontSize={20}>{ Bio }</Typography>

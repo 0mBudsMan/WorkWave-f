@@ -56,6 +56,11 @@ const inforouting=[
 		class: "Project",
 		subClass: "My_Projects1"
 	},
+	{
+		path: "add",
+		class:"Project",
+		subClass: "Adder"
+	},
 	
 	{
 		path: "gantt-chart",
@@ -236,7 +241,7 @@ export const SideNav = (props) => {
 					textAlign: "left",
 					paddingLeft: "12px",
 				}} >
-					<Typography fontFamily="Poppins, sans-serif" fontSize={16} fontWeight={700} pb={1.5}>Hi Om!</Typography>
+					<Typography fontFamily="Poppins, sans-serif" fontSize={16} fontWeight={700} pb={1.5}>Hi!</Typography>
 					<Typography fontFamily="Poppins, sans-serif" fontSize={12} fontWeight={400}>Ready to tackle another day on a project?</Typography>
 
 
@@ -314,6 +319,14 @@ export const SideNav = (props) => {
 									className="My_Projects1"
 								>
 									<ListItemText className="My_Projects1" primary="Organisations Form" />
+								</ListItemButton>
+								<ListItemButton
+									component={NextLink}
+									href="/add"
+									sx={{ pl: 4,}}
+									className="Adder"
+								>
+									<ListItemText className="Adder" primary="Add Member to Organisation" />
 								</ListItemButton>
 								
 								
@@ -491,7 +504,7 @@ export const SideNav = (props) => {
 				  }}
 				>
 				  <Typography fontFamily="Poppins, sans-serif" textAlign={"center"} fontSize={16} fontWeight={700} pb={1.5}>
-					Hi OM!
+					Hi!
 				  </Typography>
 				</Box>
 				<Box
