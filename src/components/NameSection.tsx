@@ -37,7 +37,7 @@ const NameSection = ({ user }) => {
       </div>
       <hr style={{ color: "black", width: "100%" }} />
       <div style={{marginTop: "50px", display: "flex", flexDirection: "row", alignItems: "center",}}>
-        <Image src="/ash.jpeg" width="200" height="200" alt="ash" style={{borderRadius: "50%"}}></Image>
+        <Image src="/onSelection/xml.svg" width="200" height="200" alt="ash" style={{borderRadius: "50%"}}></Image>
         <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", marginLeft: "50px"}}>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
           <Typography mr={2} fontFamily={'Poppins, sans-serif'} color={"#00000"} fontWeight={600} fontSize={30}>{FirstName} {LastName}</Typography>
