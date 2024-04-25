@@ -192,7 +192,7 @@ const Page = () => {
 
 
 							>
-								<Typography fontFamily={'Poppins, sans-serif'} fontWeight={500} color={"#131311"} fontSize={16}>Create Account</Typography>
+								<Typography fontFamily={'Poppins, sans-serif'} fontWeight={500} color={"#131311"} fontSize={16}>Sign in</Typography>
 							</Button>
 
 							<Typography textAlign={"center"} fontFamily={'Poppins, sans-serif'} fontWeight={400} fontSize={16}>Don't have an account? <Link href="/auth/register"><span style={{ fontWeight: "700", color: "black", textDecoration: "none" }}>Sign Up</span></Link></Typography>
