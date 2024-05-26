@@ -1,10 +1,24 @@
-FROM node:16-alpine
-COPY ./admin_portal /admin_portal
-WORKDIR /admin_portal
+# Dockerfile for building a Docker image for the frontend of the application
+# The frontend is a NextJs application that is served by an Nginx server
+
+FROM node:21.7.3
+
+WORKDIR /home/node/app
+
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN npm install
+
+# Copy the rest of the application code to the working directory
+COPY . .
+
+RUN npm run build
+
+# Expose the application port
+
 EXPOSE 3000
 
-ARG DEV=false
-RUN npm install && \
-    if [ $DEV = "true" ]; \
-    then npm run dev & \
-    fi 
+CMD ["npm", "start"]
+
+
