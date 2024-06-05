@@ -29,7 +29,7 @@ export const Layout = (props) => {
 				alignItems: "center",
 				flexDirection: "column",
 			}}>
-				<Typography mb={1.25} fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={600} fontSize={40} >Welcome to <span style={{color: "#F5C200"}}>project ka naam</span></Typography>
+				<Typography mb={1.25} fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={600} fontSize={40} >Welcome to <span style={{color: "#F5C200"}}>WorkWave</span></Typography>
 				{isLoginPage && <Typography fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={400} fontSize={20}>Ready to tackle another day on a project?</Typography>}
 				{!isLoginPage && <Typography fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={400} fontSize={20}></Typography>}
 			</Grid>
