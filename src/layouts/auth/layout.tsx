@@ -16,7 +16,7 @@ export const Layout = (props) => {
 
 	return (
 		<Grid container spacing={2} sx={{
-			backgroundImage: `url("/login_bg.png")`,
+			backgroundImage: `url("/lgbg.jpg")`,
 			backgroundSize: 'cover', backgroundRepeat: "no-repeat", backgroundPosition: "center",
 			minHeight: "100vh",
 			maxWidth: "100vw",
@@ -28,9 +28,10 @@ export const Layout = (props) => {
 				justifyContent: "center",
 				alignItems: "center",
 				flexDirection: "column",
+				
 			}}>
-				<Typography mb={1.25} fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={600} fontSize={40} >Welcome to <span style={{color: "#F5C200"}}>WorkWave</span></Typography>
-				{isLoginPage && <Typography fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={400} fontSize={20}>Ready to tackle another day on a project?</Typography>}
+				<Typography mb={1.25} fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} bgcolor={"#3F51B5"} fontWeight={600} fontSize={40} >Welcome to <span style={{color: "#F5C200"}}>WorkWave</span></Typography>
+				{isLoginPage && <Typography bgcolor={"#F5C200"} fontFamily={'Poppins, sans-serif'} color={"#3F51B5"} fontWeight={400} fontSize={20}>Seamless and Collaborarive Task Management at your Fingertips</Typography>}
 				{!isLoginPage && <Typography fontFamily={'Poppins, sans-serif'} color={"#F3F3F3"} fontWeight={400} fontSize={20}></Typography>}
 			</Grid>
 			<Grid item lg={6} md={12} sm={12} sx={{
