@@ -121,7 +121,7 @@ export const SideNav = (props) => {
 		if(localisMinimised){
 			var elements = document.getElementsByClassName("css-1np3eo0");
 	
-	if (elements.length > 0) {
+	if (elements.length > 0 && screen.width>1200) {
 		//alert("shrt")
 	  elements[0].style.paddingLeft = "125px";
 	} else {
@@ -130,9 +130,10 @@ export const SideNav = (props) => {
 		}
 	else{
 		var elements = document.getElementsByClassName("css-1np3eo0");
-	
-	if (elements.length > 0) {
-		//alert("shrt")
+		
+	if (elements.length > 0 && screen.width>1200) {
+		// alert("shrt")
+
 	  elements[0].style.paddingLeft = "250px";
 	} else {
 	  console.error("Element not found");
